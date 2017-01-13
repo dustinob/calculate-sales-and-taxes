@@ -33,28 +33,28 @@ var companySalesData = [
 ];
 
 // Goal is calculate: total sales & total tax grouped by company.
-
 function calculateSalesTax(salesData, taxRates) {
   var result = {};
 
   for(var i = 0; i < salesData.length; i++) {
     var name = salesData[i].name;
+    var totalSales = sumSales(salesData[i].sales)
+
     if(result[name] === undefined) {
       result[name] = {
-        totalSales: sumSales(salesData[i].sales),
-        totalTaxes: calculateTaxes(salesTaxRates,salesData[i])
+        totalSales: 0,
+        totalTaxes: 0
       };
     }
-    else
-    {
-      result[name].totalSales += sumSales(salesData[i].sales);
 
-    }
+    result[name].totalSales += totalSales;
+    result[name].totalTaxes += totalSales * taxRates[salesData[i].province];
   }
 
   return result;
 }
 
+// sums all sales
 function sumSales(salesArray) {
   var sum = 0;
   for (var i = 0; i < salesArray.length; i++) {
@@ -65,25 +65,6 @@ function sumSales(salesArray) {
 
 console.log(calculateSalesTax(companySalesData, salesTaxRates));
 
-function calculateTaxes(taxRates, salesData) {
-  var total = 0;
-
-  console.log(salesTaxRates.length);
-
-  for (var i = 0; i < taxRates.length; i++) {
-    console.log(total);
-    var rate = taxRates[i];
-    var province = salesData[i].province;
-
-    if (rate === province) {
-      total = taxRates[i] * sumSales(salesData[i].sales);
-    }
-  //console.log(total);
-  }
-  //console.log(total);
-  return total;
-
-}
 
 /* Expected Results:
 
